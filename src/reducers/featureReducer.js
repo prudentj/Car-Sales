@@ -22,20 +22,25 @@ export const featureReducer = (state = initialState, action) => {
         case 'ADD_FEATURE':
             console.log('ADDED_FEATURE!')
             console.log(action.payload)
-            return {
-                ...state,
-                additionalPrice: state.additionalPrice + action.payload.price,
-                car: {
-                    ...state.car,
-                    features: [...state.car.features, action.payload]
-                }
-                //Two potentional methods to fix bug one is to deal with state one is to stop action
-                //, additionalFeatures: state.additionalFeatures.map(
-                //     item => {
-                //         if (item.id === action.payload.id) { return { ...item, hide: true } }
-                //         else { return { ...item } }
-                //     })
-            };
+            //Fixed the problem this way though I need to hid the option to add eventually
+            if (state.car.features.find(el => { return el.id === action.payload.id })) {
+                return state;
+            }
+            else
+                return {
+                    ...state,
+                    additionalPrice: state.additionalPrice + action.payload.price,
+                    car: {
+                        ...state.car,
+                        features: [...state.car.features, action.payload]
+                    }
+                    //Two potentional methods to fix bug one is to deal with state one is to stop action
+                    //, additionalFeatures: state.additionalFeatures.map(
+                    //     item => {
+                    //         if (item.id === action.payload.id) { return { ...item, hide: true } }
+                    //         else { return { ...item } }
+                    //     })
+                };
         case 'REMOVE_FEATURE':
             console.log('REMOVE_FEATURE!')
             return {
